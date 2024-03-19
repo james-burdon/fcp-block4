@@ -24,7 +24,21 @@ class BinarySearchTree:
             print("Error- value is also in Tree")
 
     def search(self, value):
-        return False
+        # Check to see if the current node has the value we are looking for.
+        if self.value == value:
+            return True
+
+        # If value is less than current node's value, search the left sub-tree
+        if value < self.value:
+            # If there's a left child, we need to search it. If not, the value doesn't exist in the tree.
+            if self.left:
+                return self.left.search(value)
+            return False
+        else:
+            # Same process as for the right child.
+            if self.right:
+                return self.right.search(value)
+            return False
 
     def pretty_print(self, indent=0):
         if self.right:

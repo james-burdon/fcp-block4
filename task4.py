@@ -17,7 +17,7 @@ class Node:
         self.coordinates = coordinates
 
     def get_neighbours(self):
-        print(np.array(self.connections))
+        #print(np.array(self.connections))
         return np.where(np.array(self.connections) == 1)[0]
 
 
@@ -131,9 +131,9 @@ def plot_grid(grid, start, end, path=[]):
 
 def bfs(grid, start, end):
 
-
     nodes = [1,2,3,4,5,6,7,8,9,10]
     connectivity = grid
+    #print(grid)
     graph = Graph(nodes, connectivity)
 
     #grids['small'][0][0]
@@ -144,8 +144,8 @@ def bfs(grid, start, end):
     search_queue.push(start_node)
     visited = []
 
-    test = Node(index=(3,5),value=0)
-    print(test.get_neighbours)
+    # test = Node(index=(3,5),value=0)
+    # print(test.get_neighbours)
 
 
     while not search_queue.is_empty():
@@ -177,9 +177,8 @@ if __name__ == "__main__":
                              'end': Node(index='potato', value=4, connections=[1,2,3]),
                              'key': Node(index='potato', value=1, connections='apple')}
     bfs(grids['small'],starts['small'],goals['small'])
-    print(dict_of_node_examples.items())
+    # print(dict_of_node_examples.items())
 
     #assert False
 
-    bfs(grids, starts, goals)
     plot_grid(grids, starts, goals)

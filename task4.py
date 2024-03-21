@@ -137,8 +137,8 @@ def bfs(grid, start, end):
     graph = Graph(nodes, connectivity)
 
     #grids['small'][0][0]
-    start_node = Node(f'{start}', 4, connectivity, coordinates=start)
-    goal = end
+    start_node = Node(f'{start}', grid[start[0]][start[1]], connectivity, coordinates=start)
+    goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
 
     search_queue = Queue()
     search_queue.push(start_node)

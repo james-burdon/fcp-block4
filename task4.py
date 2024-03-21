@@ -71,96 +71,67 @@ class Queue:
     def is_empty(self):
         return len(self.queue) == 0
 
-
-def bfs():
-    grids = {
+grids = {
         'small': np.zeros((10, 10)),
         'medium': np.zeros((20, 20)),
         'large': np.zeros((30, 30))
     }
-    # Add obstacles to the grids
-    grids['small'][1:4, 2] = 1
-    grids['medium'][2:8, 4] = 1
-    grids['medium'][10:15, 10:15] = 1
-    grids['large'][3:12, 6] = 1
-    grids['large'][15:20, 15:20] = 1
-    grids['large'][25:28, 5:25] = 1
-    starts = {
-        'small': [0, 0],
-        'medium': [0, 0],
-        'large': [0, 0]
-    }
+# Add obstacles to the grids
+grids['small'][1:4, 2] = 1
+grids['medium'][2:8, 4] = 1
+grids['medium'][10:15, 10:15] = 1
+grids['large'][3:12, 6] = 1
+grids['large'][15:20, 15:20] = 1
+grids['large'][25:28, 5:25] = 1
+starts = {
+    'small': [0, 0],
+    'medium': [0, 0],
+    'large': [0, 0]
+}
+goals = {
+    'small': [9, 9],
+    'medium': [19, 19],
+    'large': [29, 29]
+}
 
-    goals = {
-        'small': [9, 9],
-        'medium': [19, 19],
-        'large': [29, 29]
-    }
+def plot_grid(grid, start, end, path=[]):
+
     cmap = colors.ListedColormap(['White', 'Black'])
     plt.subplot(3, 1, 1)
     plt.plot(figsize=(10, 10))
-    plt.pcolor(grids['small'][::-1], cmap=cmap)
-    plt.plot(starts['small'][0], starts['small'][1], 'ro')
-    plt.plot(goals['small'][0], goals['small'][1], 'go')
+    plt.pcolor(grid['small'][::-1], cmap=cmap)
+    plt.plot(start['small'][0], start['small'][1], 'ro')
+    plt.plot(end['small'][0], end['small'][1], 'go')
     plt.gca().invert_yaxis()
     plt.gca().set_aspect('equal')
     plt.subplot(3, 1, 2)
     plt.plot(figsize=(20, 20))
-    plt.pcolor(grids['medium'][::-1], cmap=cmap)
-    plt.plot(starts['medium'][0], starts['medium'][1], 'ro')
-    plt.plot(goals['medium'][0], goals['medium'][1], 'go')
+    plt.pcolor(grid['medium'][::-1], cmap=cmap)
+    plt.plot(start['medium'][0], start['medium'][1], 'ro')
+    plt.plot(end['medium'][0], end['medium'][1], 'go')
     plt.gca().invert_yaxis()
     plt.gca().set_aspect('equal')
     plt.subplot(3, 1, 3)
     plt.plot(figsize=(30, 30))
-    plt.pcolor(grids['large'][::-1], cmap=cmap)
-    plt.plot(starts['large'][0], starts['large'][1], 'ro')
-    plt.plot(goals['large'][0], goals['large'][1], 'go')
+    plt.pcolor(grid['large'][::-1], cmap=cmap)
+    plt.plot(start['large'][0], start['large'][1], 'ro')
+    plt.plot(end['large'][0], end['large'][1], 'go')
     plt.gca().invert_yaxis()
     plt.gca().set_aspect('equal')
     plt.tight_layout()
     plt.show()
-    starts = {
-        'small': [0, 0],
-        'medium': [0, 0],
-        'large': [0, 0]
-    }
+    
 
-    goals = {
-        'small': [9, 9],
-        'medium': [19, 19],
-        'large': [29, 29]
-    }
+def bfs(grid, start, end):
+
+    start_node = start
+    goal = end
+    search_queue = Queue()
+    search_queue.push(start_node)
+    visited = []
 
 
-# for i in range(len(grids)):
-# 	graph = Graph(nodes, connectivity)
-# 	start_node = graph.nodes[2]
-# 	goal = graph.nodes[-3]
-# 	search_queue = Queue()
-# 	search_queue.push(start_node)
-# 	visited = []
-
-# 	while not search_queue.is_empty():
-# 		node_to_check = search_queue.pop(0)
-
-# 		if node_to_check == goal:
-# 			node_to_check = goal
-# 			start_node.parent = None
-# 			route = []
-
-# 			while node_to_check.parent:
-# 				route.append(node_to_check)
-# 				node_to_check = node_to_check.parent
-# 			route.append(node_to_check)
-
-
-# 		for neighbour_index in node_to_check.get_neighbours():
-# 			neighbour = graph.nodes[neighbour_index]
-# 			if neighbour_index not in visited:
-# 				search_queue.push(neighbour)
-# 				visited.append(neighbour_index)
-# 				neighbour.parent = node_to_check
 
 if __name__ == "__main__":
-    bfs()
+    bfs(grids, starts, goals)
+    plot_graphs(grids, starts, goals)

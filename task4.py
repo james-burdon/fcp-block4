@@ -18,6 +18,8 @@ class Node:
 
     def get_neighbours(self):
         #print(np.array(self.connections))
+        # list = []
+        # list.append()
         return np.where(np.array(self.connections) == 1)[0]
 
 
@@ -140,9 +142,17 @@ def bfs(grid, start, end):
     start_node = Node(f'{start}', grid[start[0]][start[1]], connectivity, coordinates=start)
     goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
 
+
     search_queue = Queue()
     search_queue.push(start_node)
     visited = []
+
+    node_to_check = search_queue.pop(0)
+    neighbour = Node()
+    node_to_check = goal
+    start_node.parent = None
+
+    print(node_to_check.parent)
 
     # test = Node(index=(3,5),value=0)
     # print(test.get_neighbours)

@@ -11,9 +11,10 @@ class Node:
     Neighbours is a numpy array representing the row of the adjacency matrix that corresponds to the node
     '''
 
-    def __init__(self, index, value, connections=[]):
+    def __init__(self, index, value, connections=[], coordinates = None):
         self.value = value
         self.connections = connections
+        self.coordinates = coordinates
 
     def get_neighbours(self):
         return np.where(np.array(self.connections) == 1)[0]
@@ -30,7 +31,6 @@ class Graph:
         self.adjacency_matrix = adjacency_matrix
 
     def plot(self, fig=None, ax=None):
-
         if fig == None:
             fig = plt.figure()
             ax = fig.add_subplot(111)
@@ -45,6 +45,9 @@ class Graph:
             node_angle = i * 2 * np.pi / num_nodes
             node_x = network_radius * np.cos(node_angle)
             node_y = network_radius * np.sin(node_angle)
+
+            # to allow the string values for nodes
+            # circle = plt.Circle((node_x, node_y), network_radius / 10, color=cm.hot(node.value), fill=False)
             circle = plt.Circle((node_x, node_y), network_radius / 10, fill=False)
             ax.add_patch(circle)
             ax.text(node_x * 1.05, node_y * 1.05, node.value)
@@ -65,8 +68,10 @@ class Queue:
     def push(self, item):
         self.queue.append(item)
 
-    def pop(self):
-        return self.pop(0)
+    def pop(self, place):
+        if len(self.queue) < 1:
+            return None
+        return self.queue.pop(place)
 
     def is_empty(self):
         return len(self.queue) == 0
@@ -88,6 +93,7 @@ starts = {
     'medium': [0, 0],
     'large': [0, 0]
 }
+
 goals = {
     'small': [9, 9],
     'medium': [19, 19],
@@ -120,18 +126,49 @@ def plot_grid(grid, start, end, path=[]):
     plt.gca().set_aspect('equal')
     plt.tight_layout()
     plt.show()
-    
+
 
 def bfs(grid, start, end):
 
+    nodes = [1,2,3,4,5,6,7,8,9,10]
+    connectivity = grid['small']
+    graph = Graph(nodes, connectivity)
+
     start_node = start
-    goal = end
+    goal = end['small']
     search_queue = Queue()
     search_queue.push(start_node)
     visited = []
 
+    while not search_queue.is_empty():
+        node_to_check = search_queue.pop(0)
+
+        if node_to_check == goal:
+            node_to_check = goal
+            start_node.parent = None
+            route = []
+
+            while node_to_check.parent:
+                route.append(node_to_check)
+                node_to_check = node_to_check.parent
+            route.append(node_to_check)
+
+            print([node.value for node in route[::-1]])
+
+        for neighbour_index in node_to_check.get_neighbours():
+            neighbour = graph.nodes[neighbour_index]
+
+            if neighbour_index not in visited:
+                search_queue.push(neighbour)
+                visited.append(neighbour_index)
+                neighbour.parent = node_to_check
 
 
 if __name__ == "__main__":
+    dict_of_node_examples = {'start': Node(index='potato', value=5, connections='sausage'),
+                             'end': Node(index='potato', value=4, connections=[1,2,3]),
+                             'key': Node(index='potato', value=1, connections='apple')}
+    print(dict_of_node_examples.items())
+    assert False
     bfs(grids, starts, goals)
-    plot_graphs(grids, starts, goals)
+    plot_grid(grids, starts, goals)

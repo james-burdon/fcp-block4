@@ -131,12 +131,15 @@ def plot_grid(grid, start, end, path=[]):
 
 def bfs(grid, start, end):
 
+
     nodes = [1,2,3,4,5,6,7,8,9,10]
-    connectivity = grids['small']
+    connectivity = grid
     graph = Graph(nodes, connectivity)
 
-    start_node = start
+    #grids['small'][0][0]
+    start_node = Node(f'{start}', 4, connectivity, coordinates=start)
     goal = end
+
     search_queue = Queue()
     search_queue.push(start_node)
     visited = []
@@ -175,5 +178,8 @@ if __name__ == "__main__":
                              'key': Node(index='potato', value=1, connections='apple')}
     bfs(grids['small'],starts['small'],goals['small'])
     print(dict_of_node_examples.items())
+
+    #assert False
+
     bfs(grids, starts, goals)
     plot_grid(grids, starts, goals)

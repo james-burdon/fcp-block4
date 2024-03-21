@@ -130,11 +130,13 @@ def plot_grid(grid, start, end, path=[]):
 
 def bfs(grid, start, end):
 
+
     nodes = [1,2,3,4,5,6,7,8,9,10]
     connectivity = grid['small']
     graph = Graph(nodes, connectivity)
 
-    start_node = start
+    #grids['small'][0][0]
+    start_node = Node('start', 4, connectivity,coordinates=start['small'])
     goal = end['small']
     search_queue = Queue()
     search_queue.push(start_node)
@@ -169,6 +171,6 @@ if __name__ == "__main__":
                              'end': Node(index='potato', value=4, connections=[1,2,3]),
                              'key': Node(index='potato', value=1, connections='apple')}
     print(dict_of_node_examples.items())
-    assert False
+    #assert False
     bfs(grids, starts, goals)
     plot_grid(grids, starts, goals)

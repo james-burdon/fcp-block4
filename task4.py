@@ -17,8 +17,9 @@ class Node:
         self.coordinates = coordinates
 
     def get_neighbours(self):
-        #print(np.array(self.connections))
-        return np.where(np.array(self.connections) == 1)[0]
+        print(np.array(self.connections))
+        List=[[np.where(np.array(self.connections) == 1)[0][i],np.where(np.array(self.connections) == 1)[1][i]] for i in range(len(np.where(np.array(self.connections) == 1)[0]))]
+        return List
 
 
 class Graph:
@@ -131,45 +132,47 @@ def plot_grid(grid, start, end, path=[]):
 
 def bfs(grid, start, end):
 
-    nodes = [1,2,3,4,5,6,7,8,9,10]
+    # nodes = [1,2,3,4,5,6,7,8,9,10]
     connectivity = grid
     #print(grid)
-    graph = Graph(nodes, connectivity)
+    # graph = Graph(nodes, connectivity)
 
     #grids['small'][0][0]
     start_node = Node(f'{start}', grid[start[0]][start[1]], connectivity, coordinates=start)
-    goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
+    print(start_node.get_neighbours())
+    
+    # goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
 
-    search_queue = Queue()
-    search_queue.push(start_node)
-    visited = []
+    # search_queue = Queue()
+    # search_queue.push(start_node)
+    # visited = []
 
-    # test = Node(index=(3,5),value=0)
-    # print(test.get_neighbours)
+    # # test = Node(index=(3,5),value=0)
+    # # print(test.get_neighbours)
 
 
-    while not search_queue.is_empty():
-        node_to_check = search_queue.pop(0)
+    # while not search_queue.is_empty():
+    #     node_to_check = search_queue.pop(0)
 
-        if node_to_check == goal:
-            node_to_check = goal
-            start_node.parent = None
-            route = []
+    #     if node_to_check == goal:
+    #         node_to_check = goal
+    #         start_node.parent = None
+    #         route = []
 
-            while node_to_check.parent:
-                route.append(node_to_check)
-                node_to_check = node_to_check.parent
-            route.append(node_to_check)
+    #         while node_to_check.parent:
+    #             route.append(node_to_check)
+    #             node_to_check = node_to_check.parent
+    #         route.append(node_to_check)
 
-            print([node.value for node in route[::-1]])
+    #         print([node.value for node in route[::-1]])
 
-        for neighbour_index in node_to_check.get_neighbours():
-            neighbour = graph.nodes[neighbour_index]
+    #     for neighbour_index in node_to_check.get_neighbours():
+    #         neighbour = Node()
 
-            if neighbour_index not in visited:
-                search_queue.push(neighbour)
-                visited.append(neighbour_index)
-                neighbour.parent = node_to_check
+    #         if neighbour_index not in visited:
+    #             search_queue.push(neighbour)
+    #             visited.append(neighbour_index)
+    #             neighbour.parent = node_to_check
 
 
 if __name__ == "__main__":
@@ -179,6 +182,5 @@ if __name__ == "__main__":
     bfs(grids['small'],starts['small'],goals['small'])
     # print(dict_of_node_examples.items())
 
-    #assert False
 
-    plot_grid(grids, starts, goals)
+    # plot_grid(grids, starts, goals)

@@ -11,22 +11,21 @@ class Node:
     Neighbours is a numpy array representing the row of the adjacency matrix that corresponds to the node
     '''
 
-    def __init__(self, index, value, connections=[], coordinates = None):
+    def __init__(self, index, value, connections=[], coordinates=None):
         self.value = value
         self.connections = connections
         self.coordinates = coordinates
 
     def get_neighbours(self):
-
         print(np.array(self.connections))
-        List=[[np.where(np.array(self.connections) == 1)[0][i],np.where(np.array(self.connections) == 1)[1][i]] for i in range(len(np.where(np.array(self.connections) == 1)[0]))]
+        List = [[np.where(np.array(self.connections) == 1)[0][i], np.where(np.array(self.connections) == 1)[1][i]] for i
+                in range(len(np.where(np.array(self.connections) == 1)[0]))]
         return List
 
-        #print(np.array(self.connections))
+        # print(np.array(self.connections))
         # list = []
         # list.append()
-        #return np.where(np.array(self.connections) == 1)[0]
-
+        # return np.where(np.array(self.connections) == 1)[0]
 
 
 class Graph:
@@ -85,11 +84,12 @@ class Queue:
     def is_empty(self):
         return len(self.queue) == 0
 
+
 grids = {
-        'small': np.zeros((10, 10)),
-        'medium': np.zeros((20, 20)),
-        'large': np.zeros((30, 30))
-    }
+    'small': np.zeros((10, 10)),
+    'medium': np.zeros((20, 20)),
+    'large': np.zeros((30, 30))
+}
 # Add obstacles to the grids
 grids['small'][1:4, 2] = 1
 grids['medium'][2:8, 4] = 1
@@ -109,8 +109,8 @@ goals = {
     'large': [29, 29]
 }
 
-def plot_grid(grid, start, end, path=[]):
 
+def plot_grid(grid, start, end, path=[]):
     cmap = colors.ListedColormap(['White', 'Black'])
     plt.subplot(3, 1, 1)
     plt.plot(figsize=(10, 10))
@@ -138,18 +138,16 @@ def plot_grid(grid, start, end, path=[]):
 
 
 def bfs(grid, start, end):
-
     # nodes = [1,2,3,4,5,6,7,8,9,10]
     connectivity = grid
-    #print(grid)
+    # print(grid)
     # graph = Graph(nodes, connectivity)
 
-    #grids['small'][0][0]
+    # grids['small'][0][0]
     start_node = Node(f'{start}', grid[start[0]][start[1]], connectivity, coordinates=start)
     print(start_node.get_neighbours())
-    
-    # goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
 
+    # goal = Node(f'{end}', grid[end[0]][end[1]], connectivity, coordinates=end)
 
     # search_queue = Queue()
     # search_queue.push(start_node)
@@ -158,13 +156,16 @@ def bfs(grid, start, end):
     # # test = Node(index=(3,5),value=0)
     # # print(test.get_neighbours)
 
-
     search_queue = Queue()
     search_queue.push(start_node)
     visited = []
 
     node_to_check = search_queue.pop(0)
     neighbour = Node()
+    for (i, node) in enumerate(nodes):
+        new_node = Node(i, node, adjacency_matrix[i])
+        self.nodes.append(new_node)
+
     node_to_check = goal
     start_node.parent = None
 
@@ -173,38 +174,37 @@ def bfs(grid, start, end):
     # test = Node(index=(3,5),value=0)
     # print(test.get_neighbours)
 
+    while not search_queue.is_empty():
+        node_to_check = search_queue.pop(0)
 
+        if node_to_check == goal:
+            node_to_check = goal
+            start_node.parent = None
+            route = []
 
-    # while not search_queue.is_empty():
-    #     node_to_check = search_queue.pop(0)
+            while node_to_check.parent:
+                route.append(node_to_check)
+                node_to_check = node_to_check.parent
+            route.append(node_to_check)
 
-    #     if node_to_check == goal:
-    #         node_to_check = goal
-    #         start_node.parent = None
-    #         route = []
+            print([node.value for node in route[::-1]])
 
-    #         while node_to_check.parent:
-    #             route.append(node_to_check)
-    #             node_to_check = node_to_check.parent
-    #         route.append(node_to_check)
+        for neighbour_index in node_to_check.get_neighbours():
+            # we need to convert the above line to accept coordinates and then evaluate them and then locate the
+            # point represented by the coordinates and call upon that in the neighbours = Node(__________) function
+            neighbour = Node(neighbour_index, )
 
-    #         print([node.value for node in route[::-1]])
-
-    #     for neighbour_index in node_to_check.get_neighbours():
-    #         neighbour = Node()
-
-    #         if neighbour_index not in visited:
-    #             search_queue.push(neighbour)
-    #             visited.append(neighbour_index)
-    #             neighbour.parent = node_to_check
+            if neighbour_index not in visited:
+                search_queue.push(neighbour)
+                visited.append(neighbour_index)
+                neighbour.parent = node_to_check
 
 
 if __name__ == "__main__":
-    dict_of_node_examples = {'start': Node(index='potato', value=5, connections='sausage'),
-                             'end': Node(index='potato', value=4, connections=[1,2,3]),
-                             'key': Node(index='potato', value=1, connections='apple')}
-    bfs(grids['small'],starts['small'],goals['small'])
+    dict_of_node_examples = {'start': Node(index='potato', value=5, connections=[2, 5, 3]),
+                             'end': Node(index='potato', value=4, connections=[1, 2, 3]),
+                             'key': Node(index='potato', value=1, connections=[5, 1, 2])}
+    bfs(grids['small'], starts['small'], goals['small'])
     # print(dict_of_node_examples.items())
-
 
     # plot_grid(grids, starts, goals)
